@@ -7,17 +7,23 @@ function Todo() {
     const dispatch = useDispatch()
     const [input, setInput] = useState('')
 
-    const renderItems = items.map((item, index) => <li key={index} onClick={() => dispatch(removeOne(index))}>{item}</li>)
+    // Adjust to handle todo object structure
+    const renderItems = items.map((todo) => (
+        <li key={todo.id} onClick={() => dispatch(removeOne(todo.id))}>
+            {todo.text}
+        </li>
+    ));
 
     const submitForm = (e) => {
-        e.preventDefault()
-        dispatch(addTodo(input))
+        e.preventDefault();
+        dispatch(addTodo(input));
+        setInput(''); // Clear input after submission
     }
 
     return (
         <div>
-            <form onSubmit={(e) => submitForm(e)}>
-                <input type="text" onChange={(e) => setInput(e.target.value)} />
+            <form onSubmit={submitForm}>
+                <input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
                 <button type="submit">Submit</button>
             </form>
             <ul>
@@ -25,7 +31,7 @@ function Todo() {
             </ul>
             <button onClick={() => dispatch(clearTodo())}>Clear</button>
         </div>
-    )
+    );
 }
 
-export default Todo
+export default Todo;

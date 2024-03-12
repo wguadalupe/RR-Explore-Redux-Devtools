@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+let todoId = 0; 
+
 const initialState = {
     items: []
 }
@@ -9,19 +11,18 @@ export const todoSlice = createSlice({
     initialState,
     reducers: {
         addTodo: (state, action) => {
-            return { items: [...state.items, action.payload]}
+            // Add a todo with a unique id
+            state.items.push({ id: todoId++, text: action.payload });
         },
         removeOne: (state, action) => {
-            console.log(action)
-            let array = [...state.items]
-            let index = action.payload
+            // Remove a todo by id
+            const index = state.items.findIndex(todo => todo.id === action.payload);
             if(index !== -1) {
-                array.splice(index, 1)
-                return { items: array }
+                state.items.splice(index, 1);
             }
         },
-        clearTodo: () => {
-            return { items: [] }
+        clearTodo: (state) => {
+            state.items = [];
         }
     }
 })
